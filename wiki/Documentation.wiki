@@ -337,9 +337,9 @@ resource_library(
 
 在程序中需要包含static_resource.h（带上相对于BLADE_ROOT的路径）和"common/base/static_resource.hpp"，
 用 STATIC_RESOURCE 宏来引用数据：
-<syntaxhighlight lang='cpp'>
+{{{
 StringPiece data = STATIC_RESOURCE(poppy_static_favicon_ico);
-</syntaxhighlight>
+}}}
 STATIC_RESOURCE 的参数是从BLADE_ROOT目录开始的数据文件的文件名，把所有非字母数字和下划线的字符都替换为_。
 
 得到的 data 在程序运行期间一直存在，只可读取，不可写入。
