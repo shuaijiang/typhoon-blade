@@ -430,7 +430,7 @@ cc_test(
 
 =命令行参考=
 
-blade [action] [options] [targets]
+blade `[`action`]` `[`options`]` `[`targets`]`
 
 action是一个动作，目前有
  * build 表示构建项目
