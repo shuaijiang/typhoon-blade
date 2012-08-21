@@ -612,7 +612,7 @@ su.1.0 前就查找不到了，所以输出undefined reference.
 
 
 结论：
- *检查include path。
+ * 检查include path。
 
 === 为什么不要从windows里拉下svn代码再放在linux开发机编译？===
 因为代码库里有些文件是符号链接，Windows 上的 SVN 客户端不支持符号链接。
@@ -626,25 +626,25 @@ windows 上 checkout 出来的代码，放到 linux 下，符号链接不正确�
 prebuilt 库只有.so文件，我也只需要编译.so 库
 
 解决过程：
-# cc_library 如果需要编译为动态库，那么只需要提供动态库。
-# cc_plugin 需要静态库。
+ # cc_library 如果需要编译为动态库，那么只需要提供动态库。
+ # cc_plugin 需要静态库。
 
 结论：
-*所以prebuilt库最好提供静态库和动态库。
-*升级到最新blade。
+ * 所以prebuilt库最好提供静态库和动态库。
+ * 升级到最新blade。
 
 === 别的组只提供了静态库，但是我们需要编译动态库 ===
 描述：
 别的组只提供了静态库，但是我们需要编译动态库 ？
 
 解决过程：
-# .a files are just archives of .o object files, so all you need to do is unpack the archive and repackage them as a shared object (.so)。
+ # .a files are just archives of .o object files, so all you need to do is unpack the archive and repackage them as a shared object (.so)。
 
 ar -x mylib.a
 gcc -shared *.o -o mylib.so
 
-# common 组有脚本自动转, common/tools/atoso
-# so 不能转为 .a 库。
+ # common 组有脚本自动转, common/tools/atoso
+ # so 不能转为 .a 库。
 
 结论：要求相关组提供好.a， .so prebuilt 库。
 
@@ -653,22 +653,22 @@ gcc -shared *.o -o mylib.so
 想使用特定版本的gcc编译项目。
 
 解决过程：
-*1. CC=/usr/bin/gcc CXX=/usr/bin/g++ CPP=/usr/bin/cpp LD=/usr/bin/g++ blade targets 
+ * CC=/usr/bin/gcc CXX=/usr/bin/g++ CPP=/usr/bin/cpp LD=/usr/bin/g++ blade targets 
 
 结论：
-*升级到最新blade且注意环境变量的配置要一致，即使用版本一致的编译器和linker。
+ * 升级到最新blade且注意环境变量的配置要一致，即使用版本一致的编译器和linker。
 
 === 我的代码已经修改了，blade编译还有问题？===
 描述：
 在CI机器上，blade编译有error, 修复错误后从新从svn拉取，但是还是提示相同的错误。
 
 解决过程：
-*1. 检查文件是否是修改后的copy.
-*2. 该文件由于在CI机器上是root权限，而该同事登录机器的用户名不是root, 覆盖不了原来的文件。
-*3. 提示错误的文件是老文件。
+ * 检查文件是否是修改后的copy.
+ * 该文件由于在CI机器上是root权限，而该同事登录机器的用户名不是root, 覆盖不了原来的文件。
+ * 提示错误的文件是老文件。
 
 结论：
-*权限切换时需要注意文件的所属者。
+ * 权限切换时需要注意文件的所属者。
 
 === 编译出来的SO库带有路径信息？===
 描述：
@@ -682,22 +682,22 @@ gcc -shared *.o -o mylib.so
 使用更新后的Blade编译本地项目发现error flag 没有起作用 ？
 
 解决过程：
-# 检查Blade是否是最新的。
-# 检查cpp程序是否把error flag 过滤了，如果不支持这个error flag, Blade 不会使用，否则编译报错。
-# 检查后发现gcc版本过低。
+ # 检查Blade是否是最新的。
+ # 检查cpp程序是否把error flag 过滤了，如果不支持这个error flag, Blade 不会使用，否则编译报错。
+ # 检查后发现gcc版本过低。
 
 结论：
-*升级gcc。
+ * 升级gcc。
 
 === blade -c 清除不了项目生成的文件 ===
 描述：
 blade -c 清除不了项目生成的文件
 
 解决过程：
-# 请先检查命令是否配对使用blade -prelease with blade -prelease -c , blade -pdebug with blade -pdebug -c。
+ # 请先检查命令是否配对使用blade -prelease with blade -prelease -c , blade -pdebug with blade -pdebug -c。
 
 结论：
-*检查命令。
+ * 检查命令。
 
 === 如何显示构建的命令行 ===
 我想看到构建过程中中执行的完整命令。
@@ -761,9 +761,9 @@ cc_library(
 fbox 用blade编译后运行core, 查看log, 发现不能查找到某个symbol。
 
 解决过程：
-*1. 检查BUILD 文件link all symbols， dynamic_link flags 是否用错target
-*2. 检查后发现有错，重新写好后，再次编译运行，还是找不到某个symbol
-*3. 某个symbol没有扩展到exe里的动态符号表里，某个库需要使用这个symbol, 但是查找不到，所以core,
+ # 检查BUILD 文件link all symbols， dynamic_link flags 是否用错target
+ # 检查后发现有错，重新写好后，再次编译运行，还是找不到某个symbol
+ # 某个symbol没有扩展到exe里的动态符号表里，某个库需要使用这个symbol, 但是查找不到，所以core,
 动态库引用主程序中的符号，运行时找不到这个符号。链接时需要使用-rdynamic链接选项。
 cc_binary里使用export_dynamic=1  传送‘-export-dynamic’ 给 ELF linker。
 
@@ -773,14 +773,14 @@ cc_binary里使用export_dynamic=1  传送‘-export-dynamic’ 给 ELF linker�
 === 运维机器的gcc版本不同，编译的agent 不能部署到所有机器 ===
 
 描述：
-运维机器的gcc版本不同，编译的agent不能作统一部署。
+机器的gcc版本不同，编译的agent不能作统一部署。
 
 解决过程：
-*1. libgcc 没有加入到cc_binary 静态链接。
-*2. 立刻支持静态链接GLIBC特定版本。
+ * libgcc 没有加入到cc_binary 静态链接。
+ * 立刻支持静态链接GLIBC特定版本。
 
 结论：
-*升级到新版本blade解决。
+ * 升级到新版本blade解决。
 
 === 加上-finstrument-functions后程序core了 ===
 
@@ -789,12 +789,12 @@ cc_binary里使用export_dynamic=1  传送‘-export-dynamic’ 给 ELF linker�
 加在extra_cppflags 里，但是编译后运行程序core了
 
 解决过程：
-*1. blade使用g++编译程序。
-*2. 发现没有自定义void __cyg_profile_func_enter (void *, void *)  和 void __cyg_profile_func_exit (void *, void *)。
-*3. 自己定义以上两个函数并且用extern "C"声明。
+ * blade使用g++编译程序。
+ * 发现没有自定义void __cyg_profile_func_enter (void *, void *)  和 void __cyg_profile_func_exit (void *, void *)。
+ * 自己定义以上两个函数并且用extern "C"声明。
 
 结论：
-* 用户定义void __cyg_profile_func_enter (void *, void *)  和 void __cyg_profile_func_exit (void *, void *)。
+ * 用户定义void __cyg_profile_func_enter (void *, void *)  和 void __cyg_profile_func_exit (void *, void *)。
 
 === 需要用到一个prebuild库，用Blade编译后程序hang了，是不是blade编译问题 ===
 
@@ -804,13 +804,13 @@ cc_binary里使用export_dynamic=1  传送‘-export-dynamic’ 给 ELF linker�
 不能进入main函数继续执行。
 
 解决过程：
-*1. gdb debug 发现tcmalloc用到的一个初始化函数InitModule使用了两次，造成spinlock被递归持有，造成死锁。
-*2. 查找为什么会被调用两次，发现c标准库里的一个函数符号被这个prebuild库的一个函数符号覆盖。
-*3. 覆盖后的函数有调用malloc行为，但是tcmalloc还没有被初始化完，所有又初始化一次，造成锁被递归持有，
+ # gdb debug 发现tcmalloc用到的一个初始化函数InitModule使用了两次，造成spinlock被递归持有，造成死锁。
+ # 查找为什么会被调用两次，发现c标准库里的一个函数符号被这个prebuild库的一个函数符号覆盖。
+ # 覆盖后的函数有调用malloc行为，但是tcmalloc还没有被初始化完，所有又初始化一次，造成锁被递归持有，
 从而陷入等待状态。
 
 结论：
-* 用户把这个prebuild库改为使用blade源代码编译方式。
+ * 用户把这个prebuild库改为使用blade源代码编译方式。
 
 = 联系我们 =
 Blade 产品CE
