@@ -204,56 +204,6 @@ cc_library(
 
 == 程序故障 ==
 
-=== 程序无法一次读取超过2G的文件，是不是Blade的问题？===
-
-描述： 
-以前用makefile编译的SU程序一次read调用能读到超过2G大小文件内容，用blade不可以了，是不是blade
-链接了错误的GLIBC库。
-
-内核限制了read一次读出数据大小，实验时读出数据大小也小于2G，单独用gcc测试也无法一次全部读取2G以上的文件，因此Blade没有问题，
-先前能读取可能是做了什么特殊处理。
-
-=== fbox 用blade编译后core ？===
-
-描述：
-fbox 用blade编译后运行core, 查看log, 发现不能查找到某个symbol。
-
-解决过程：
- # 检查BUILD 文件link all symbols， dynamic_link flags 是否用错target
- # 检查后发现有错，重新写好后，再次编译运行，还是找不到某个symbol
- # 某个symbol没有扩展到exe里的动态符号表里，某个库需要使用这个symbol, 但是查找不到，所以core,
-动态库引用主程序中的符号，运行时找不到这个符号。链接时需要使用-rdynamic链接选项。
-cc_binary里使用export_dynamic=1  传送‘-export-dynamic’ 给 ELF linker。
-
-结论：
-如果在exe里想使用dlopen打开一个动态库，而动态库想使用exe里的某些符号，请使用export_dynamic选项。
-
-=== 运维机器的gcc版本不同，编译的agent 不能部署到所有机器 ===
-
-描述：
-机器的gcc版本不同，编译的agent不能作统一部署。
-
-解决过程：
- * libgcc 没有加入到cc_binary 静态链接。
- * 立刻支持静态链接GLIBC特定版本。
-
-结论：
- * 升级到新版本blade解决。
-
-=== 加上-finstrument-functions后程序core了 ===
-
-描述：
-需要在编译时加上 -finstrument-functions 查看函数调用关系，
-加在extra_cppflags 里，但是编译后运行程序core了
-
-解决过程：
- * blade使用g++编译程序。
- * 发现没有自定义void __cyg_profile_func_enter (void *, void *)  和 void __cyg_profile_func_exit (void *, void *)。
- * 自己定义以上两个函数并且用extern "C"声明。
-
-结论：
- * 用户定义void __cyg_profile_func_enter (void *, void *)  和 void __cyg_profile_func_exit (void *, void *)。
-
 === 需要用到一个prebuild库，用Blade编译后程序hang了，是不是blade编译问题 ===
 
 描述：
