@@ -520,7 +520,6 @@ command! -complete=dir -nargs=* Blade call Blade('<args>')
 
 =安装=
 
-blade的SVN位置：https://tc-scm.tencent.com/setech/setech_infrastructure_rep/Infra_proj/trunk/src/common。
 执行install脚本即可安装到~/bin下，目前因还在开发阶段，变化还比较快，以软链方式安装，install后不能删除checkout出来的原始目录。
 目前blade生成scons脚本，因此还需要安装scons 2.0以上版本。
 Blade 需要至少 Python 2.6，我们建议使用 python 2.7.x (x越高越好)，但不用 python3
