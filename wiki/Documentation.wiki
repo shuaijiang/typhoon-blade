@@ -9,24 +9,25 @@ Autotools 号称auto，但是还是需要人工写很多东西，运行一系列
 Blade 就是针对这些问题，围绕R2代码规范而开发的新一代构建工具，希望能成为开发者手中的“瑞士军刀”。
 
 = Blade 解决的问题 =
-* 源文件更新导致需要重新构建。这个 gnu make 都能解决得很好。
-* 头文件更新，所以以来这个头文件的源文件都需要重新构建。这个 gnu make 不直接支持，需要搭配 gcc 来生成和更新依赖。
-* 库文件更新，所依赖的库文件更新后，程序应该重新连接，GNU Make 可以做到。
-* 即使我只构建自己的目标，如果库的源代码变了，库应该重新生成，GNU Make 用递归 Make 无法做到。
-* 库文件之间的依赖自动传递，一个库依赖另一个库，库的最终用户不需要关心。
-* 构建过程中的警告和错误应该醒目地显示出来。
-* 能自动支持 R2 大量使用的 proto buffer，以及方便扩充以支持外来可能引入的新工具。
-* 应该能集成自动测试，代码检查等开发常用的功能。
+ * 源文件更新导致需要重新构建。这个 gnu make 都能解决得很好。
+ * 头文件更新，所以以来这个头文件的源文件都需要重新构建。这个 gnu make 不直接支持，需要搭配 gcc 来生成和更新依赖。
+ * 库文件更新，所依赖的库文件更新后，程序应该重新连接，GNU Make 可以做到。
+ * 即使我只构建自己的目标，如果库的源代码变了，库应该重新生成，GNU Make 用递归 Make 无法做到。
+ * 库文件之间的依赖自动传递，一个库依赖另一个库，库的最终用户不需要关心。
+ * 构建过程中的警告和错误应该醒目地显示出来。
+ * 能自动支持 R2 大量使用的 proto buffer，以及方便扩充以支持外来可能引入的新工具。
+ * 应该能集成自动测试，代码检查等开发常用的功能。
 
 =Blade运行条件=
 Blade 运行时需要以下条件：
-*SCons v2.0 or later   (required)
-*Python v2.6 or later  (required)
-*ccache v3.1 or later  (optional)
+* SCons v2.0 or later   (required)
+* Python v2.6 or later  (required)
+* ccache v3.1 or later  (optional)
+
 Blade 编译项目时可能需要到：
-*swig   v2.0 or later  (required for swig_library)
-*flex v2.5 or later    (required for lex_yacc)
-*bison v2.1 or later   (required for lex_yacc)
+* swig   v2.0 or later  (required for swig_library)
+* flex v2.5 or later    (required for lex_yacc)
+* bison v2.1 or later   (required for lex_yacc)
 
 =源代码树的组织=
 T2的项目都要求源代码有明确的根目录，C++ 中的 #include 的路径也需要从这个目录开始写起，这样能有效地避免头文件重名造成的问题。
