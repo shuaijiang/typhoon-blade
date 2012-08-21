@@ -55,7 +55,7 @@ Blade 通过一系列的名字为 "BUILD" 的文件（文件名全大写），�
 构建脚本很简单：
 
 范例：common/base/string/BUILD
-<syntaxhighlight lang="python">
+{{{
 cc_library(
     name = 'string',
     srcs = [
@@ -67,7 +67,7 @@ cc_library(
     ],
     deps = ['//common/base:int']
 )
-</syntaxhighlight>
+}}}
 也是说明式的，只需要列出目标名，源文件名和依赖名（可以没有）即可。
 
 ==风格建议==
@@ -120,14 +120,14 @@ cc_library同时用于构建静态和动态库，默认只构建静态库，只�
 --generate-dynamic 才生成动态链接库。
 
 举例：
-<syntaxhighlight lang="python">
+{{{
 cc_library(
     name='lowercase',
     srcs=['./src/lower/plowercase.cpp'],  
     deps=['#pthread'],
     link_all_symbols=False
 )
-</syntaxhighlight>
+}}}
    
  * link_all_symbols=True
 库在被静态链接时，确保库里所有的符号都被链接，以保证依赖全局对象构造函数，比如自动注册器的代码能够正常工作。
@@ -148,13 +148,13 @@ False: debug版本不作优化。
 
 ===cc_binary===
 定义C++可执行文件目标
-<syntaxhighlight lang="python">
+{{{
 cc_binary(
     name='prstr',
     srcs=['./src/mystr_main/mystring.cpp'],
     deps=['#pthread',':lowercase',':uppercase','#dl'],
 )
-</syntaxhighlight>
+}}}
 
  * dynamic_link=True
 目前我们的binary默认为全静态编译以适应云计算平台使用。
@@ -183,7 +183,7 @@ allow obtaining backtraces from within a program.
 在测试程序中用"new_name"来访问
 
 可以根据需要自行选择，这些路径都也可以是目录。
-<syntaxhighlight lang='python'>
+{{{
 cc_test(
     name = 'textfile_test',
     srcs = 'textfile_test.cpp',
@@ -194,7 +194,7 @@ cc_test(
         ('//your_proj/path/file', 'new_name')
     ]
 )
-</syntaxhighlight>
+}}}
 
  * export_dynamic=True
 Pass the flag ‘-export-dynamic’ to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of dlopen or to allow obtaining backtraces from within a program.
@@ -204,13 +204,13 @@ Pass the flag ‘-export-dynamic’ to the ELF linker, on targets that support i
 deps 为import所涉及的其他proto_library 
 自动依赖protobuf，使用者不需要再显式指定。
 构建时自动调用protoc生成cc和h，并且编译成对应的cc_library
-<syntaxhighlight lang='python'>
+{{{
 proto_library(
     name = 'rpc_meta_info_proto',
     srcs = 'rpc_meta_info.proto',
     deps = ':rpc_option_proto',
 )
-</syntaxhighlight>
+}}}
 Blade支持proto_library，使得在项目中使用protobuf十分方便。
 
 要引用某 proto 文件生成的头文件，需要从 BLADE_ROOT 的目录开始，只是把 proto 扩展名改为 pb.h 扩展名。
@@ -219,7 +219,7 @@ Blade支持proto_library，使得在项目中使用protobuf十分方便。
 ===lex_yacc_library===
 srcs 必须为二元列表，后缀分别为ll和yy
 构建时自动调用flex和bison, 并且编译成对应的cc_library
-<syntaxhighlight lang='python'>
+{{{
 lex_yacc_library(
      name = 'parser',
      srcs = [
@@ -231,7 +231,7 @@ lex_yacc_library(
      ],
      recursive=1
 )
-</syntaxhighlight>
+}}}
 
 * recursive=True
 生成可重入的C scanner.
@@ -239,7 +239,7 @@ flex has the ability to generate a reentrant C scanner. This is accomplished by 
 例如：
 
 可以同时扫描两个文件并且在token level比较而不是单个字符比较
-<syntaxhighlight lang='c'>
+{{{
 /* Example of maintaining more than one active scanner. */
      
 do {
@@ -252,7 +252,7 @@ do {
         printf("Files are different.");
      
 } while ( tok1 && tok2 );
-</syntaxhighlight>
+}}}
 
 ===gen_rule===
 用于定制自己的目标
@@ -264,14 +264,14 @@ $OUTS
 $FIRST_SRC
 $FIRST_OUT
 $BUILD_DIR -- 可被替换为 build[64,32]_[release,debug] 输出目录
-<syntaxhighlight lang='python'>
+{{{
 gen_rule(
     name='test_gen_target',
     cmd='echo what_a_nice_day;touch test2.c',
     deps=[':test_gen'],                         # 可以有deps , 也可以被别的target依赖
     outs=['test2.c']
 )
-</syntaxhighlight>
+}}}
 很多用户使用gen_rule动态生成代码文件然后和某个cc_library或者cc_binary一起编译，
 需要注意应该尽量在输出目录生成代码文件,如build64_debug下，并且文件的路径名要写对，
 如 outs = ['websearch2/project_example/module_1/file_2.cc'], 这样使用
@@ -279,7 +279,7 @@ gen_rule生成的文件和库一起编译时就不会发生找不到动态生成
 
 ===swig_library===
 根据.i文件生成相应的python, java 和php cxx模块代码，并且生成对应语言的代码。
-<syntaxhighlight lang='python'>
+{{{
 swig_library(
     name = 'poppy_client',
     srcs = [
@@ -293,13 +293,13 @@ swig_library(
     java_lib_packed=1, # 表示把生成的libpoppy_client_java.so打包到依赖者的jar包里，如java_jar依赖这个swig_library
     optimize=['O3']    # 编译优化选项
 )
-</syntaxhighlight>
+}}}
  * warning
 这里的warning仅仅指swig编译参数cpperraswarn是否被指定了，swig_library默认使用非标准编译告警级别（没有那么严格）。
 
 ===cc_plugin===
 支持生成target所依赖的库都是静态库.a的so库，即plugin。
-<syntaxhighlight lang='python'>
+{{{
 cc_plugin(
     name='mystring',
     srcs=['./src/mystr/mystring.cpp'],
@@ -308,7 +308,7 @@ cc_plugin(
     defs=['_MT'],
     optimize=['O3']
 )
-</syntaxhighlight>
+}}}
 cc_plugin 是为 JNI，python 扩展等需要动态库的场合设计的，不应该用于其他目的。
 
 ===resource_library===
@@ -317,7 +317,7 @@ cc_plugin 是为 JNI，python 扩展等需要动态库的场合设计的，不�
 大家都遇到过部署一个可执行程序，还要附带一堆辅助文件才能运行起来的情况吧？
 blade通过resource_library，支持把程序运行所需要的数据文件也打包到可执行文件里，
 比如poppy下的BUILD文件里用的静态资源：
-<syntaxhighlight lang='python'>
+{{{
 resource_library(
     name = 'static_resource',
     srcs = [
@@ -330,7 +330,7 @@ resource_library(
         'static/poppy.html'
     ]
 )
-</syntaxhighlight>
+}}}
 生成  和 libstatic_resource.a 或者 libstatic_resource.so。
 就像一样protobuf那样，编译后后生成一个库libstatic_resource.a，和一个相应的头文件static_resource.h，带路径包含进来即可使用。
 
@@ -347,7 +347,7 @@ STATIC_RESOURCE 的参数是从BLADE_ROOT目录开始的数据文件的文件名
 
 ===java_jar===
 编译java源代码。
-<syntaxhighlight lang='python'>
+{{{
 java_jar(
     name = 'poppy_java_client',
     srcs = [
@@ -362,7 +362,7 @@ java_jar(
         './lib:junit',
     ]
 )
-</syntaxhighlight>
+}}}
  * prebuilt=True
 主要应用在已经编译打包好的java jar 包。
 
@@ -406,26 +406,26 @@ Blade test支持增量测试 ，可以加快tests的执行。
 * 5）Fail 的test cases ，每次都重跑。
 如果需要使用全量测试，使用--full-test option, 如 blade test common/... --full-test ， 全部测试都需要跑。
 另外，cc_test 支持了 always_run 属性，用于在增量测试时，不管上次的执行结果，每次总是要跑。
-<syntaxhighlight lang='python'>
+{{{
 cc_test(
     name = 'zookeeper_test',
     srcs = 'zookeeper_test.cc',
     always_run = True
 )
-</syntaxhighlight>
+}}}
 
 Blade test支持并行测试，并行测试把这一次构建后需要跑的test cases并发地run。
 blade test [targets] --test-jobs N
 -t, --test-jobs N 设置并发测试的并发数，Blade会让N个测试进程并行执行
  
 对于某些因为可能相互干扰而不能并行跑的测试，可以加上 exclusive 属性
-<syntaxhighlight lang='python'>
+{{{
 cc_test(
     name = 'zookeeper_test',
     srcs = 'zookeeper_test.cc',
     exclusive = True
 )
-</syntaxhighlight>
+}}}
 
 =命令行参考=
 
@@ -487,11 +487,6 @@ TOOLCHAIN_DIR和CPP等组合起来，构成调用工具的完整路径，例如�
 ==install==
 blade命令的符号链接会被安装下面的命令到~/bin 下。
 
-==make2build==
-Makefile转BUILD文件
-只是用于基于 R2 原来的 Generic.mak 写的 Makefile
-由于原来的Makefile不区分直接和间接依赖，因此为了避免添加不必要的依赖，生成的BUILD文件里，deps部分要手工填上。
-
 ==lsrc==
 列出当前目录下指定的源文件，以blade的srcs列表格式输出。
 
@@ -503,7 +498,7 @@ Makefile转BUILD文件
 
 我们编写了 Blade 命令，使得可以在 vim 中直接执行 blade，并快速跳转到出错行（得益于 vim 的 [http://easwy.com/blog/archives/advanced-vim-skills-quickfix-mode/ quickfix] 特性）。
 
-<syntaxhighlight lang="vim">
+{{{
 function! Blade(...)
     let l:old_makeprg = &makeprg
     setlocal makeprg=blade
@@ -512,7 +507,7 @@ function! Blade(...)
 endfunction
 
 command! -complete=dir -nargs=* Blade call Blade('<args>')
-</syntaxhighlight>
+}}}
 
 使用时直接在 vim 的 : 模式输入（可带参数）
 :Blade
@@ -710,7 +705,7 @@ blade -c 清除不了项目生成的文件
 === 如何发布预编译的库? ===
 有些机密的代码，希望以库的方式发布，但同时又依赖了非机密的库（比如common），如何发布呢？
 比如这样的库：
-<syntaxhighlight lang="python">
+{{{
 cc_library(
     name = 'secrity',
     srcs = 'secrity.cpp',
@@ -719,10 +714,10 @@ cc_library(
         '//thirdparty/glog:glog',
     ]
 )
-</syntaxhighlight>
+}}}
 这样发布：
 修改 BUILD 文件，去掉 srcs
-<syntaxhighlight lang="python">
+{{{
 cc_library(
     name = 'secrity',
     prebuilt = True, # srcs 改为这个
@@ -731,7 +726,7 @@ cc_library(
         '//thirdparty/glog:glog',
     ]
 )
-</syntaxhighlight>
+}}}
 同时对外的头文件保持不变，按照cc_library介绍中，prebuild要求的方式组织库即可。
 尤其需要注意的是，deps 必须保持不变，且不要把虽然被你一来但却不属于你的项目的库作为预编译库发布出去。
 
