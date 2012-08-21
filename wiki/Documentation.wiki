@@ -92,7 +92,7 @@ deps的允许的格式：
  * ":name" 当前目录下的target， path可以省略。
  * "#pthread" 系统库。直接写#跟名字即可。
 
-cc_* 目标
+cc_`*` 目标
 包括 cc_test, cc_binary, cc_library，CC 目标均支持的参数为：
  * srcs 源文件列表
  * deps 依赖列表
