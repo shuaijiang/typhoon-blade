@@ -20,17 +20,17 @@ Blade 就是针对这些问题，围绕R2代码规范而开发的新一代构建
 
 =Blade运行条件=
 Blade 运行时需要以下条件：
-* SCons v2.0 or later   (required)
-* Python v2.6 or later  (required)
-* ccache v3.1 or later  (optional)
+ * SCons v2.0 or later   (required)
+ * Python v2.6 or later  (required)
+ * ccache v3.1 or later  (optional)
 
 Blade 编译项目时可能需要到：
-* swig   v2.0 or later  (required for swig_library)
-* flex v2.5 or later    (required for lex_yacc)
-* bison v2.1 or later   (required for lex_yacc)
+ * swig   v2.0 or later  (required for swig_library)
+ * flex v2.5 or later    (required for lex_yacc)
+ * bison v2.1 or later   (required for lex_yacc)
 
 =源代码树的组织=
-T2的项目都要求源代码有明确的根目录，C++ 中的 #include 的路径也需要从这个目录开始写起，这样能有效地避免头文件重名造成的问题。
+项目都要求源代码有明确的根目录，C++ 中的 #include 的路径也需要从这个目录开始写起，这样能有效地避免头文件重名造成的问题。
 Blade并不从某个配置文件或者环境变量读取这个信息，因为开发人员往往需要同时有多个目录树并存。Blade获取源代码根的方法是，无论当前从哪一级子目录运行，都从当前目录开始向上查找BLADE_ROOT文件，有这个文件的目录即为源代码树的根。
 
 目前源代码目录需要自己拉取，将来我们会集成到 Blade 中。BLADE_ROOT 文件也需要用户自己创建。方法：
@@ -46,11 +46,11 @@ Blade并不从某个配置文件或者环境变量读取这个信息，因为开
  your_project
  ...
 
-=BUILD文件=
+= BUILD文件 =
 
 Blade 通过一系列的名字为 "BUILD" 的文件（文件名全大写），这些文件需要开发者去编写。每个 BUILD文件通过一组目标描述函数描述了一个目标的源文件，所依赖的其他目标，以及其他一些属性。
 
-==BUILD文件的示例==
+== BUILD文件的示例 ==
 
 构建脚本很简单：
 
@@ -71,34 +71,34 @@ cc_library(
 也是说明式的，只需要列出目标名，源文件名和依赖名（可以没有）即可。
 
 ==风格建议==
-* 四空格缩进，不要用tab字符
-* 总是用单引号
-* 目标名用小写
-* src 里的文件名按字母顺序排列
-* deps 里先写本目录内的依赖（:target），后写其他目录内的（//dir:name），分别按字母顺序排列。
-* 不同目标之间空一行，前面可以加注释
-* 注释的 # 后面空一格，比如 # This is a comment
+ * 四空格缩进，不要用tab字符
+ * 总是用单引号
+ * 目标名用小写
+ * src 里的文件名按字母顺序排列
+ * deps 里先写本目录内的依赖（:target），后写其他目录内的（//dir:name），分别按字母顺序排列。
+ * 不同目标之间空一行，前面可以加注释
+ * 注释的 # 后面空一格，比如 # This is a comment
 
 ==描述目标==
 
 Blade用一组target函数来定义目标，这些target的通用属性有：
-*name: 字符串，和路径一起成为target的唯一标识，也决定了构建的输出命名
-*srcs: 列表或字符串，构建该对象需要的源文件，一般在当前目录，或相对于当前目录的子目录中
-*deps: 列表或字符串，该对象所依赖的其它targets
+ * name: 字符串，和路径一起成为target的唯一标识，也决定了构建的输出命名
+ * srcs: 列表或字符串，构建该对象需要的源文件，一般在当前目录，或相对于当前目录的子目录中
+ * deps: 列表或字符串，该对象所依赖的其它targets
 
 deps的允许的格式：
-*“//path/to/dir/:name” 其他目录下的target，path为从BUILD_ROOT出发的路径，name为被依赖的目标名。看见就知道在哪里。
-*“:name” 当前目录下的target， path可以省略。
-*“#pthread” 系统库。直接写#跟名字即可。
+ *“//path/to/dir/:name” 其他目录下的target，path为从BUILD_ROOT出发的路径，name为被依赖的目标名。看见就知道在哪里。
+ *“:name” 当前目录下的target， path可以省略。
+ *“#pthread” 系统库。直接写#跟名字即可。
 
 cc_* 目标
 包括 cc_test, cc_binary, cc_library，CC 目标均支持的参数为：
-* srcs 源文件列表
-* deps 依赖列表
-* incs 头文件路径列表，仅用于thirdparty
-* defs 宏定义列表，仅用于thirdparty
-* warning 警告设置，仅用于thirdparty
-* optimize 优化设置
+ * srcs 源文件列表
+ * deps 依赖列表
+ * incs 头文件路径列表，仅用于thirdparty
+ * defs 宏定义列表，仅用于thirdparty
+ * warning 警告设置，仅用于thirdparty
+ * optimize 优化设置
 
 {| border="1" 
 |- 
@@ -129,19 +129,19 @@ cc_library(
 )
 </syntaxhighlight>
    
-* link_all_symbols=True
+ * link_all_symbols=True
 库在被静态链接时，确保库里所有的符号都被链接，以保证依赖全局对象构造函数，比如自动注册器的代码能够正常工作。
 
 需要全部链接的部分最好单独拆分出来做成全部链接的库，而不是整个库全都全部链接，否则会无端增大可执行文件的大小。
 
 相当于原来的force_link，不过是在用在生成而不是使用库时。需要注意的是，link_all_symbols是库自身的属性，不是使用库时的属性。
 
-* always_optimize
+ * always_optimize
 True: 不论debug版本还是release版本总是被优化。
 False: debug版本不作优化。
 默认为False。目前只对cc_library有效。
 
-* prebuilt=True
+ * prebuilt=True
 主要应用在thirdparty中从rpm包解来的库，使用这个参数表示不从源码构建。对应的二进制文件必须存在 lib{32,64}_{release,debug} 这样的子目录中。不区分debug/release时可以只有两个实际的目录。
 
 在老的 BUILD 文件中你可能看到 pre_build 这个词，这是 prebuilt 的错误拼写，已经修正为现在的名字，并淘汰了旧的名字。
@@ -156,12 +156,12 @@ cc_binary(
 )
 </syntaxhighlight>
 
-* dynamic_link=True
+ * dynamic_link=True
 目前我们的binary默认为全静态编译以适应云计算平台使用。
 如果有应用需要动态编译方式，可以使用此参数指定，此时被此target依赖的所有库都会自动生成对应的动态库供链接。
 需要注意的是，dynamic_link只适用于可执行文件，不适用于库。
 
-* export_dynamic=True
+ * export_dynamic=True
 Pass the flag ‘-export-dynamic’ to the ELF linker, on targets that support
 it. This instructs the linker to add all symbols, not only used ones, to the
 dynamic symbol table. This option is needed for some uses of dlopen or to
@@ -172,14 +172,14 @@ allow obtaining backtraces from within a program.
 还支持testdata参数， 列表或字符串，文件会被链接到输出所在目录name.runfiles子目录下，比如：testdata/a.txt =>name.runfiles/testdata/a.txt
 用blade -runtests(简写-t)命令，会在成功构建后到name.runfiles目录下自动运行，并输出总结信息。
 
-* testdata=[]
+ * testdata=[]
 在name.runfiles里建立symbolic link指向工程目录的文件，目前支持
 以下几种形式
-* 'file'
+ * 'file'
 在测试程序中使用这个名字本身的形式来访问
-* '//your_proj/path/file'
+ * '//your_proj/path/file'
 在测试程序中用"your_proj/path/file"来访问。
-* ('//your_proj/path/file', "new_name")
+ * ('//your_proj/path/file', "new_name")
 在测试程序中用"new_name"来访问
 
 可以根据需要自行选择，这些路径都也可以是目录。
@@ -196,10 +196,10 @@ cc_test(
 )
 </syntaxhighlight>
 
-* export_dynamic=True
+ * export_dynamic=True
 Pass the flag ‘-export-dynamic’ to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of dlopen or to allow obtaining backtraces from within a program.
 
-===proto_library===
+=== proto_library ===
 用于定义protobuf目标
 deps 为import所涉及的其他proto_library 
 自动依赖protobuf，使用者不需要再显式指定。
@@ -294,7 +294,7 @@ swig_library(
     optimize=['O3']    # 编译优化选项
 )
 </syntaxhighlight>
-* warning
+ * warning
 这里的warning仅仅指swig编译参数cpperraswarn是否被指定了，swig_library默认使用非标准编译告警级别（没有那么严格）。
 
 ===cc_plugin===
@@ -363,7 +363,7 @@ java_jar(
     ]
 )
 </syntaxhighlight>
-* prebuilt=True
+ * prebuilt=True
 主要应用在已经编译打包好的java jar 包。
 
 =Blade的输出=
@@ -382,28 +382,28 @@ java_jar(
 =Blade Cache=
 blade 支持 cache，可以大幅度加快构建速度。
 blade 支持两种cache
-*1) ccache , cache配置使用ccache的配置, 如通过配置 CCACHE_DIR 环境变量指定ccache目录。
-*2) ccache 没有安装，则使用scons cache, 配置细节如下
+ * 1) ccache , cache配置使用ccache的配置, 如通过配置 CCACHE_DIR 环境变量指定ccache目录。
+ * 2) ccache 没有安装，则使用scons cache, 配置细节如下
 
 scons cache需要一个目录，依次按以下顺序检测：
-*命令行参数--cache-dir
-*环境变量BLADE_CACHE_DIR
-*如果均未配置，则不启用cache。
-*空的BLADE_CACHE_DIR变量或者不带参数值的--cache-dir=, 则会禁止cache。
+ * 命令行参数--cache-dir
+ * 环境变量BLADE_CACHE_DIR
+ * 如果均未配置，则不启用cache。
+ * 空的BLADE_CACHE_DIR变量或者不带参数值的--cache-dir=, 则会禁止cache。
 
-*--cache-size 如不指定，则默认为2G，如指定，则使用用户指定的以Gigabyte为单位的大小的cache。
+--cache-size 如不指定，则默认为2G，如指定，则使用用户指定的以Gigabyte为单位的大小的cache。
 如 --cache-dir='~/user_cache' --cache-size=16 (16 G)大小cache。
 用户可以根据需要配置大小，超出大小blade会执行清理工作，限制cache大小在用户指定的cache大小，
 请谨慎设置这个大小，因为涉及到构建速度和机器磁盘空间的占用。
 
-=测试支持=
+= 测试支持 =
 Blade test支持增量测试 ，可以加快tests的执行。
 已经Pass 的tests 在下一次构建和测试时不需要再跑，除非：
-*1）tests 的任何依赖变化导致其重新生成。
-*2）tests 依赖的测试数据改变，这种依赖为显式依赖，用户需要使用BUILD文件指定，如testdata。
-*3）tests 所在环境变量发生改变。
-*4）test arguments 改变。
-*5）Fail 的test cases ，每次都重跑。
+* 1）tests 的任何依赖变化导致其重新生成。
+* 2）tests 依赖的测试数据改变，这种依赖为显式依赖，用户需要使用BUILD文件指定，如testdata。
+* 3）tests 所在环境变量发生改变。
+* 4）test arguments 改变。
+* 5）Fail 的test cases ，每次都重跑。
 如果需要使用全量测试，使用--full-test option, 如 blade test common/... --full-test ， 全部测试都需要跑。
 另外，cc_test 支持了 always_run 属性，用于在增量测试时，不管上次的执行结果，每次总是要跑。
 <syntaxhighlight lang='python'>
@@ -432,44 +432,44 @@ cc_test(
 blade [action] [options] [targets]
 
 action是一个动作，目前有
-* build 表示构建项目
-* test  表示构建并且跑单元测试
-* clean 表示清除目标的构建结果
-* query 查询目标的依赖项与被依赖项
-* run   构建并run一个单一目标
+ * build 表示构建项目
+ * test  表示构建并且跑单元测试
+ * clean 表示清除目标的构建结果
+ * query 查询目标的依赖项与被依赖项
+ * run   构建并run一个单一目标
 
 targets是一个列表，支持的格式：
-* path:name 表示path中的某个target
-* path表示path中所有targets
-* path/... 表示path中所有targets，并递归包括所有子目录
-* :name表示当前目录下的某个target
+ * path:name 表示path中的某个target
+ * path表示path中所有targets
+ * path/... 表示path中所有targets，并递归包括所有子目录
+ * :name表示当前目录下的某个target
 默认表示当前目录
 
 参数列表：
-* -m32,-m64            指定构建目标位数，默认为自动检测
-* -p PROFILE           指定debug/release，默认release
-* -k, --keep-going     构建过程中遇到错误继续执行（如果是致命错误不能继续）
-* -j N,--jobs=N        N路并行编译，多CPU机器上适用
-* -t N,--test-jobs=N   N路并行测试，多CPU机器上适用
-* --cache-dir=DIR      指定一个cache目录
-* --cache-size=SZ      指定cache大小，以G为单位
-* --verbose            完整输出所运行的每条命令行
-* –h, --help           显示帮助
-* --color=yes/no/auto  是否开启彩色
-* --generate-dynamic   强制生成动态库
-* --generate-java      为proto_library 和 swig_library 生成java文件
-* --generate-php       为proto_library 和 swig_library 生成php文件
-* --gprof              支持 GNU gprof
-* --gcov               支持 GNU gcov 做覆盖率测试
+ * -m32,-m64            指定构建目标位数，默认为自动检测
+ * -p PROFILE           指定debug/release，默认release
+ * -k, --keep-going     构建过程中遇到错误继续执行（如果是致命错误不能继续）
+ * -j N,--jobs=N        N路并行编译，多CPU机器上适用
+ * -t N,--test-jobs=N   N路并行测试，多CPU机器上适用
+ * --cache-dir=DIR      指定一个cache目录
+ * --cache-size=SZ      指定cache大小，以G为单位
+ * --verbose            完整输出所运行的每条命令行
+ * –h, --help           显示帮助
+ * --color=yes/no/auto  是否开启彩色
+ * --generate-dynamic   强制生成动态库
+ * --generate-java      为proto_library 和 swig_library 生成java文件
+ * --generate-php       为proto_library 和 swig_library 生成php文件
+ * --gprof              支持 GNU gprof
+ * --gcov               支持 GNU gcov 做覆盖率测试
 
 =环境变量=
 
 Blade支持以下环境变量：
-* TOOLCHAIN_DIR，默认为空
-* CPP，默认为cpp
-* CXX，默认为c++
-* CC，默认为gcc
-* LD，默认为c++
+ * TOOLCHAIN_DIR，默认为空
+ * CPP，默认为cpp
+ * CXX，默认为c++
+ * CC，默认为gcc
+ * LD，默认为c++
  
 TOOLCHAIN_DIR和CPP等组合起来，构成调用工具的完整路径，例如：
  
@@ -550,19 +550,19 @@ install使得可以在任何目录下直接执行
 运行blade , 报syntax error。
 
 解决过程：
-*1.blade 运行需要python 2.6 或者以上(2.7). 请使用python -V 查看python 版本。
-*2.另外CI曾经遇到这样一个问题装了python 2.7还是报错，经查看是存在两个python版本2.4 和 2.7，很多系统都存在两个版本，请检查高版本python在blade用户的profile中。
-*3.使用env python, which python 等命令查看。
+ # blade 运行需要python 2.6 或者以上(2.7). 请使用python -V 查看python 版本。
+ # 另外CI曾经遇到这样一个问题装了python 2.7还是报错，经查看是存在两个python版本2.4 和 2.7，很多系统都存在两个版本，请检查高版本python在blade用户的profile中。
+ # 使用env python, which python 等命令查看。
 
 结论：
-*环境配置问题。
+ * 环境配置问题。
 
 === vim 编辑 BUILD 文件时没有语法高亮 ===
-* 首先确认是否是以 install 的方式安装的
-* 然后检查 ~/.vim/syntax/blade.vim 是否存在，是否指向正确的文件
-* 然后检查 ~/.vimrc 里是否有 autocmd! BufRead,BufNewFile BUILD set filetype=blade
+ * 首先确认是否是以 install 的方式安装的
+ * 然后检查 ~/.vim/syntax/blade.vim 是否存在，是否指向正确的文件
+ * 然后检查 ~/.vimrc 里是否有 autocmd! BufRead,BufNewFile BUILD set filetype=blade
 这条命令。
-* 如果问题还没解决，请联系我们。
+ * 如果问题还没解决，请联系我们。
 
 === 为什么alt用不了？===
 
@@ -570,12 +570,12 @@ install使得可以在任何目录下直接执行
 alt 用不了
 
 解决过程：
-*1. 重新执行install
-*2. 把 ~/bin 加入到用户profile
+ # 重新执行install
+ # 把 ~/bin 加入到用户profile
 
 
 结论：
-*PATH 问题。
+* PATH 问题。
 
 
 == 构建问题 ==
@@ -586,15 +586,15 @@ alt 用不了
 //common/config/ini:ini 在某个库的deps里放置的顺序不同，放前面没有通过，放到后面通过了。
 
 解决过程：
-*1. 查看编译错误输出，中间有个库su.1.0是prebuilt库。
-*2. //common/config/ini:ini 放在这个target 前后编译结果不一样。
-*3. 经查看，su.1.0 依赖//common/config/ini:ini，但是没有编译进静态库。所以
+ * 查看编译错误输出，中间有个库su.1.0是prebuilt库。
+ * //common/config/ini:ini 放在这个target 前后编译结果不一样。
+ * 经查看，su.1.0 依赖//common/config/ini:ini，但是没有编译进静态库。所以
 //common/config/ini:ini 放到它后面时，gcc按顺序查找能查找到symbols, 但放在
 su.1.0 前就查找不到了，所以输出undefined reference.
 
 结论：
-*1. 建议尽量源代码编译项目。
-*2. 减少prebuilt项目，prebuilt库尽量补全依赖的target。
+ * 建议尽量源代码编译项目。
+ * 减少prebuilt项目，prebuilt库尽量补全依赖的target。
 
 === ccache缓存了错误信息，是不是ccache出问题了？===
  
@@ -602,17 +602,17 @@ su.1.0 前就查找不到了，所以输出undefined reference.
 编译提示有错误，在源文件里修改后重新编译还是有错误，是不是ccache缓存了告警或者错误信息，没有更新出问题了 ？
 
 解决过程：
-*1. 查看ccache manual, ccache在direct mode 可能会有internal error。
-*2. 告知XFS同事如果再次遇到这个问题，立刻修改配置查看是否是cache自身问题。
-*3. 同时查看预处理cpp文件后的结果，发现头文件修改没有反映在预处理后的文件里。
-*4. 应该是包含路径错误，经过查找，build64_release下存在相同的头文件，而且build64_release默认是加到
+ # 查看ccache manual, ccache在direct mode 可能会有internal error。
+ # 告知XFS同事如果再次遇到这个问题，立刻修改配置查看是否是cache自身问题。
+ # 同时查看预处理cpp文件后的结果，发现头文件修改没有反映在预处理后的文件里。
+ # 应该是包含路径错误，经过查找，build64_release下存在相同的头文件，而且build64_release默认是加到
 -I里， 编译时默认加入 -Ibuild64_realease -I. 
 在build64_realease 首先查找头文件， 因此找到这个同名头文件，XFS同事放了一个文件在这个输出目录里，但是修改的却是
 自己的工程文件。
 
 
 结论：
-*检查include path。
+ *检查include path。
 
 === 为什么不要从windows里拉下svn代码再放在linux开发机编译？===
 因为代码库里有些文件是符号链接，Windows 上的 SVN 客户端不支持符号链接。
