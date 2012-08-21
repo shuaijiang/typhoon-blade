@@ -463,7 +463,7 @@ targets是一个列表，支持的格式：
  * --gprof              支持 GNU gprof
  * --gcov               支持 GNU gcov 做覆盖率测试
 
-=环境变量=
+= 环境变量 =
 
 Blade支持以下环境变量：
  * TOOLCHAIN_DIR，默认为空
@@ -482,19 +482,20 @@ TOOLCHAIN_DIR和CPP等组合起来，构成调用工具的完整路径，例如�
 
 如同所有的环境变量设置规则，放在命令行前的环境变量，只对这一次调用起作用，如果要后续起作用，用 export，要持久生效，放入 ~/.profile 中。
 
+环境变量的支持将来考虑淘汰，改为配置编译器版本的方式，因此建议暂时不要使用。
 
-=辅助命令=
+= 辅助命令 =
 
-==install==
+== install ==
 blade命令的符号链接会被安装下面的命令到~/bin 下。
 
-==lsrc==
+== lsrc ==
 列出当前目录下指定的源文件，以blade的srcs列表格式输出。
 
-==genlibbuild==
+== genlibbuild ==
 自动生成以目录名为库名的cc_library，以测试文件的名为名的cc_test，proto的BUILD文件，并假设这些测试都依赖这个库
 
-==vim集成==
+== vim集成 ==
 我们编写了vim的blade语法文件，高亮显示blade关键字，install后就会自动生效。
 
 我们编写了 Blade 命令，使得可以在 vim 中直接执行 blade，并快速跳转到出错行（得益于 vim 的 [http://easwy.com/blog/archives/advanced-vim-skills-quickfix-mode/ quickfix] 特性）。
