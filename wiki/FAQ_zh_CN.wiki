@@ -8,12 +8,9 @@
 运行blade , 报syntax error。
 
 解决过程：
- # blade 运行需要python 2.6 或者以上(2.7). 请使用python -V 查看python 版本。
- # 另外CI曾经遇到这样一个问题装了python 2.7还是报错，经查看是存在两个python版本2.4 和 2.7，很多系统都存在两个版本，请检查高版本python在blade用户的profile中。
- # 使用env python, which python 等命令查看。
-
-结论：
- * 环境配置问题。
+ # blade 运行需要python 2.6 以上. 请使用python -V 查看python 版本。
+ # 装了python 2.7还是报错，确认 ptyhon -V 看到的是新版本，必要时配置PATH环境变量或者重新登录。
+ # 使用env python, which python 等命令查看python命令到底用的是哪个。
 
 === vim 编辑 BUILD 文件时没有语法高亮 ===
  * 首先确认是否是以 install 的方式安装的
@@ -29,11 +26,7 @@ alt 用不了
 
 解决过程：
  # 重新执行install
- # 把 ~/bin 加入到用户profile
-
-
-结论：
-* PATH 问题。
+ # 把 ~/bin 加入到用户profile，重新登录
 
 
 == 构建问题 ==
@@ -91,9 +84,9 @@ prebuilt 库只有.so文件，我也只需要编译.so 库
  * 所以prebuilt库最好提供静态库和动态库。
  * 升级到最新blade。
 
-=== 别的组只提供了静态库，但是我们需要编译动态库 ===
+=== 手头只有无源代码的静态库，但是我们需要编译动态库 ===
 描述：
-别的组只提供了静态库，但是我们需要编译动态库 ？
+只提供了静态库，但是我们需要编译动态库 ？
 
 解决过程：
  # .a files are just archives of .o object files, so all you need to do is unpack the archive and repackage them as a shared object (.so)。
@@ -101,10 +94,10 @@ prebuilt 库只有.so文件，我也只需要编译.so 库
 ar -x mylib.a
 gcc -shared *.o -o mylib.so
 
- # common 组有脚本自动转, common/tools/atoso
+ # 我们提供了脚本自动转, atoso
  # so 不能转为 .a 库。
 
-结论：要求相关组提供好.a， .so prebuilt 库。
+结论：无源代码时，最好同时得到动态和静态库。
 
 === blade支持环境变量里指定的gcc去编译项目吗？===
 描述：
