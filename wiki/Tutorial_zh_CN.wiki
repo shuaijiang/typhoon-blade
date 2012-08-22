@@ -1,0 +1,26 @@
+#labels Featured,Phase-Deploy
+=Download=
+Firstly, yu should download the zip package, an put it to any dir.
+
+=Install=
+{{{
+$ zip blade-1.0.zip
+$ cd blade
+$ ./install
+}}}
+
+Blade will be installed to ~/bin, if it' not in your PATH environment, relogin maybe required.
+
+=Experience=
+Then, you can experience blade by example
+{{{
+$ cd example
+$ blade build ...
+$ blade test...
+$ blade clean ...
+$ blade run app:app
+$ blade 
+}}}
+
+=Build your code=
+Organize you code same as example, you can enjoy blade now.
