@@ -8,7 +8,7 @@ $ zip blade-1.0.zip
 $ cd blade
 $ ./install
 }}}
-The installing program linked the binary to the ones in the unzipped dir, so don't remove the unzipped dir.
+The installing program only make symbolic links the binaries to the ones in the unzipped dir, but not make a copy. so don't remove the unzipped dir.
 
 Blade will be installed to ~/bin, if it' not in your PATH environment, relogin maybe required.
 
