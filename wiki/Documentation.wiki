@@ -96,10 +96,12 @@ cc_`*` 目标
 包括 cc_test, cc_binary, cc_library，CC 目标均支持的参数为：
  * srcs 源文件列表
  * deps 依赖列表
- * incs 头文件路径列表，仅用于thirdparty
- * defs 宏定义列表，仅用于thirdparty
- * warning 警告设置，仅用于thirdparty
+ * incs 头文件路径列表
+ * defs 宏定义列表
+ * warning 警告设置
  * optimize 优化设置
+
+注：*thirdparty是我们代码库里的一个特殊目录，里面的代码都是一些第三方库，按照台风系统的代码规范，只允许对这里的代码用incs, defs和warnings。
 
 {| border="1" 
 |- 
