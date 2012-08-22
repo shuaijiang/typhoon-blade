@@ -465,9 +465,48 @@ targets是一个列表，支持的格式：
  * --gprof              支持 GNU gprof
  * --gcov               支持 GNU gcov 做覆盖率测试
 
+= 配置 =
+Blade 支持三个配置文件
+ * blade.zip 同一个目录下的 blade.conf，这是全局配置。
+ * ~/.bladerc 用户 HOME 目录下的 .bladerc 文件，这是用户级的配置。
+ * BLADE_ROOT其实是个配置文件，写在这里的是项目级配置。
+== cc_config ==
+所有c/c++目标的公共配置
+{{{
+cc_config(
+    extra_incs = ['thirdparty']  # 额外的 -I，比如 thirdparty
+)
+}}}
+
+== cc_test_config ==
+构建和运行测试所需的配置
+{{{
+cc_test_config(
+    dynamic_link=True,   # 测试程序是否默认动态链接，可以减少磁盘开销，默认为 False
+    heap_check='strict', # 开启 gperftools 的 HEAPCHECK，具体取值请参考 gperftools 的文档
+    gperftools_libs='thirdparty/perftools:tcmalloc',  # tcmclloc 库，blade deps 格式
+    gperftools_debug_lib='thirdparty/perftools:tcmalloc_debug', # tcmalloc_debug 库，blade deps 格式
+    gtest_lib='thirdparty/gtest:gtest',  # gtest 的库，blade deps 格式
+    gtest_main_lib='thirdparty/gtest:gtest_main' # gtest_main 的库路径，blade deps 格式
+)
+}}}
+
+== proto_library_config ==
+编译protobuf需要的配置
+{{{
+proto_library_config(
+    protoc='protoc',  # protoc编译器的路径
+    protobuf_libs='thirdparty/protobuf:protobuf', # protobuf库的路径，Blade deps 格式
+    protobuf_path='thirdparty', # import 时的 proto 搜索路径，相对于 BLADE_ROOT
+    protobuf_include_path = 'thirdparty',  # 编译 pb.cc 时额外的 -I 路径
+)
+}}}
+
+所有这些配置的默认值都是假设安装到系统目录下，如果你的项目中把这些库放进进了自己的代码中（比如我们内部），请修改相应的配置。
+
 = 环境变量 =
 
-Blade支持以下环境变量：
+Blade还支持以下环境变量：
  * TOOLCHAIN_DIR，默认为空
  * CPP，默认为cpp
  * CXX，默认为c++
