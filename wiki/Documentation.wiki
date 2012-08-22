@@ -101,7 +101,7 @@ cc_`*` 目标
  * warning 警告设置
  * optimize 优化设置
 
-* thirdparty是我们代码库里的一个特殊目录，里面的代码都是一些第三方库，按照台风系统的代码规范，只允许对这里的代码用incs, defs和warnings。
+* 注：thirdparty是我们代码库里的一个特殊目录，里面的代码都是一些第三方库，按照台风系统的代码规范，只允许对这里的代码用incs, defs和warnings。
 
 {| border="1" 
 |- 
