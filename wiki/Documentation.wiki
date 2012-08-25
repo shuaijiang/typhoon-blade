@@ -490,7 +490,7 @@ cc_test_config(
 }}}
 
 注意:
- * gtest 1.6开始，去掉了 make install，但是可以绕过[http://blog.csdn.net/chengwenyao18/article/details/7181514 gtest1.6.0安装方法]
+ * gtest 1.6开始，去掉了 make install，但是可以绕过[http://blog.csdn.net/chengwenyao18/article/details/7181514 gtest1.6.0安装方法]。
  * gtest 库还依赖 pthread，因此gtest_libs需要写成 ['#gtest', '#pthread']
  * 或者把源码纳入你的源码树，比如thirdparty下，就可以写成gtest_libs='//thirdparty/gtest:gtest'。
 
