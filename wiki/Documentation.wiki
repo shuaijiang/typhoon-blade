@@ -482,23 +482,24 @@ cc_config(
 cc_test_config(
     dynamic_link=True,   # 测试程序是否默认动态链接，可以减少磁盘开销，默认为 False
     heap_check='strict', # 开启 gperftools 的 HEAPCHECK，具体取值请参考 gperftools 的文档
-    gperftools_libs='thirdparty/perftools:tcmalloc',  # tcmclloc 库，blade deps 格式
-    gperftools_debug_libs='thirdparty/perftools:tcmalloc_debug', # tcmalloc_debug 库，blade deps 格式
-    gtest_libs='thirdparty/gtest:gtest',  # gtest 的库，blade deps 格式
-    gtest_main_libs='thirdparty/gtest:gtest_main' # gtest_main 的库路径，blade deps 格式
+    gperftools_libs='//thirdparty/perftools:tcmalloc',  # tcmclloc 库，blade deps 格式
+    gperftools_debug_libs='//thirdparty/perftools:tcmalloc_debug', # tcmalloc_debug 库，blade deps 格式
+    gtest_libs='//thirdparty/gtest:gtest',  # gtest 的库，blade deps 格式
+    gtest_main_libs='//thirdparty/gtest:gtest_main' # gtest_main 的库路径，blade deps 格式
 )
 }}}
 
-* gtest 1.6开始，去掉了 make install，但是可以绕过[http://blog.csdn.net/chengwenyao18/article/details/7181514 gtest1.6.0安装方法]
-* gtest 库还依赖 pthread，因此gtest_libs需要写成 ['#gtest', '#pthread']
-* 或者把源码纳入你的源码树，比如thirdparty下，就可以写成gtest_libs='//thirdparty/gtest:gtest'。
+注意:
+ * gtest 1.6开始，去掉了 make install，但是可以绕过[http://blog.csdn.net/chengwenyao18/article/details/7181514 gtest1.6.0安装方法]
+ * gtest 库还依赖 pthread，因此gtest_libs需要写成 ['#gtest', '#pthread']
+ * 或者把源码纳入你的源码树，比如thirdparty下，就可以写成gtest_libs='//thirdparty/gtest:gtest'。
 
 == proto_library_config ==
 编译protobuf需要的配置
 {{{
 proto_library_config(
     protoc='protoc',  # protoc编译器的路径
-    protobuf_libs='thirdparty/protobuf:protobuf', # protobuf库的路径，Blade deps 格式
+    protobuf_libs='//thirdparty/protobuf:protobuf', # protobuf库的路径，Blade deps 格式
     protobuf_path='thirdparty', # import 时的 proto 搜索路径，相对于 BLADE_ROOT
     protobuf_include_path = 'thirdparty',  # 编译 pb.cc 时额外的 -I 路径
 )
