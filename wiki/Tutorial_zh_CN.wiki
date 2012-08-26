@@ -10,7 +10,7 @@ $ ./install
 }}}
 The installing program only make symbolic links the binaries to the ones in the unzipped dir, but not make a copy. so don't remove the unzipped dir.
 
-Blade will be installed to ~/bin, if it' not in your PATH environment, relogin maybe required.
+Blade will be installed to ~/bin, if it's not in your PATH environment, relogin maybe required.
 
 =Experience=
 Then, you can experience blade by example
