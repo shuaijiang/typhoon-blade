@@ -13,7 +13,7 @@ The installing program only make symbolic links the binaries to the ones in the 
 Blade will be installed to ~/bin, if it's not in your PATH environment, relogin maybe required.
 
 =Experience=
-Then, you can experience blade by example
+Now, you can experience blade by example.
 {{{
 $ cd example
 $ blade build ...
