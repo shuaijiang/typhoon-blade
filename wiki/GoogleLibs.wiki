@@ -3,21 +3,21 @@
 现在我们把这些库整合起来，贡献给大家。
 
 注意
-* 所有的库都在 thirdparty 目录下，引用时也需要带 "thirdparty/" 前缀。
-* 所有的库都有两个目录，libname-1.6.0 和 libname，前者是为了升级使用的，请不要用，只用不带版本的目录。
-* protobuf 依赖 zlib-dev 包（不同的发行版可能名字不同），请自行确保已安装。
-* 请参考 examples 目录，学习使用方法。
-* 我们所做的工作只是整合这些开源的库，所有原始版权属于 google。
-* BLADE_ROOT 里是使用这个库需要的 Blade 配置信息，如果你决心所有的项目都使用这个库，直接写到你的 blade.conf 或者 .bladerc 文件即可。
-* 配置文件用的 protobuf 编译器为 thirdparty/protobuf/bin/protoc，已经在里面，如果在你的机器上不能运行，下载原始的 protobuf-2.4.1 包，configure make 后，放到这个位置替换掉即可。
+ * 所有的库都在 thirdparty 目录下，引用时也需要带 "thirdparty/" 前缀。
+ * 所有的库都有两个目录，libname-1.6.0 和 libname，前者是为了升级使用的，请不要用，只用不带版本的目录。
+ * protobuf 依赖 zlib-dev 包（不同的发行版可能名字不同），请自行确保已安装。
+ * 请参考 examples 目录，学习使用方法。
+ * 我们所做的工作只是整合这些开源的库，所有原始版权属于 google。
+ * BLADE_ROOT 里是使用这个库需要的 Blade 配置信息，如果你决心所有的项目都使用这个库，直接写到你的 blade.conf 或者 .bladerc 文件即可。
+ * 配置文件用的 protobuf 编译器为 thirdparty/protobuf/bin/protoc，已经在里面，如果在你的机器上不能运行，下载原始的 protobuf-2.4.1 包，configure make 后，放到这个位置替换掉即可。
 
 
 包含的各个库及版本：
-* gflags 2.0
-* glog 0.3.2
-* protobuf 2.4.1
-* gtest 1.6.0
-* gmock 1.6.0
+ * gflags 2.0
+ * glog 0.3.2
+ * protobuf 2.4.1
+ * gtest 1.6.0
+ * gmock 1.6.0
 
 gflags 的修改：
  * --help 时，帮助信息以彩色输出，就像 gtest 那样
