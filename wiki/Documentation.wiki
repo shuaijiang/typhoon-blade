@@ -153,8 +153,6 @@ False: debug版本不作优化。
  * prebuilt=True
 主要应用在thirdparty中从rpm包解来的库，使用这个参数表示不从源码构建。对应的二进制文件必须存在 lib{32,64}_{release,debug} 这样的子目录中。不区分debug/release时可以只有两个实际的目录。
 
-在老的 BUILD 文件中你可能看到 pre_build 这个词，这是 prebuilt 的错误拼写，已经修正为现在的名字，并淘汰了旧的名字。
-
 ===cc_binary===
 定义C++可执行文件目标
 {{{
