@@ -197,6 +197,14 @@ cc_library(
 
 为了避免不必要的重复编译和可能的编译参数不同导致违反 C++ 的[http://en.wikipedia.org/wiki/One_Definition_Rule 一次定义规则]，通常每个源文件应该只属于一个目标，如果一个源文件被多个目标使用，应该写成单独的 cc_library，并在 deps 中依赖这个库。
 
+=== 如何开启 C++11 ===
+编辑配置文件，加入：
+{{{
+cc_config(
+    cxxflags='gnu++0x'
+)
+}}}
+
 == 程序故障 ==
 
 === 需要用到一个prebuild库，用Blade编译后程序hang了，是不是blade编译问题 ===
