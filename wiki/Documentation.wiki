@@ -178,7 +178,7 @@ cc_binary(
 ===cc_test===
 相当于cc_binary，再加上自动链接gtest和gtest_main
 还支持testdata参数， 列表或字符串，文件会被链接到输出所在目录name.runfiles子目录下，比如：testdata/a.txt =>name.runfiles/testdata/a.txt
-用blade -runtests(简写-t)命令，会在成功构建后到name.runfiles目录下自动运行，并输出总结信息。
+用blade test子命令，会在成功构建后到name.runfiles目录下自动运行，并输出总结信息。
 
  * testdata=[]
 在name.runfiles里建立symbolic link指向工程目录的文件，目前支持
