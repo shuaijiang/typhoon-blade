@@ -1,5 +1,5 @@
 #labels Featured
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 
 = Blade是什么 =
 
